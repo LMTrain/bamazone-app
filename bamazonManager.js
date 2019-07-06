@@ -132,13 +132,15 @@ function listItems() {
   });
 }
 
+var chosenId;
+var newStockQty;
 function lowInvent() {
     // query the database for all items being sold
     connection.query("SELECT * FROM products WHERE stock_quantity <= 60", function(err, results) {
       if (err) throw err;
         var choiceArray = [];
         var choiceArrayPrice = [];
-        var chosenId;
+        // var chosenId;
         console.log("\n");
         console.log("*************************************************************");
         console.log("* These are the lists of products that are low in inventory *");
@@ -178,36 +180,33 @@ function addInvent() {
                     choiceArray.push(results[i].product_name);
                     choiceArrayPrice.push(", Price = $" + results[i].price + ",  QTY = " + results[i].stock_quantity);
                     chosenId = results[i].item_id;
-                    console.log(" " + chosenId + ") " + choiceArray[i] + choiceArrayPrice[i]);                             
-                                           
+                    console.log(" " + chosenId + ") " + choiceArray[i] + choiceArrayPrice[i]);                                      
                 }
                 return choiceArray;                    
               },
-              message: "\n" + "Enter the Id of the product you will like to add inventory?"
+              message: "\n" + "Select the product name you will like to add inventory?"
                         
             },
             {
               name: "add",
               type: "input",
-              message: "How many quantity of the product would you like to add?",
-              
+              message: "\n" + "How many quantity of the product would you like to add?",              
             }
           ])
         .then(function(answer) {
             // get the information of the chosen item
-            var chosenItem;
-                    
+            var chosenItem;                    
             for (var i = 0; i < results.length; i++) {
               if (results[i].product_name === answer.choice) {
-                chosenItem = results[i];
-                                    
+                chosenItem = results[i];                                   
               }
             }
     
             // determine if there are enough of the product in stock
             
             // if (chosenItem.stock_quantity > parseInt(answer.add)) {
-              newStockQty = chosenItem.stock_quantity + parseInt(answer.add)           
+              newStockQty = chosenItem.stock_quantity + parseInt(answer.add)
+              chosenId = chosenItem.item_id           
               // console.log("Stock quantity is less than input quatity")          
               
               connection.query(
@@ -224,15 +223,16 @@ function addInvent() {
                   if (error) throw err;               
                   console.log("\n");               
                   console.log("******************************");
-                  console.log("*Inventory adde successfully!*");
-                  console.log("stock_quantity =" + newStockQty);
-                  console.log("item_id =" + chosenId);
+                  console.log("*Inventory added successfully!*");
+                  console.log("New Stock Quantity =" + newStockQty);
+                  // console.log("item_id =" + chosenId);
+                  // console.log("item_id =" + chosenItem.item_id);
                   console.log("******************************");              
                 }
               );          
               //Select all products and return the result object:
               connection.query(
-                "SELECT * FROM products", function (err, result) {
+                "SELECT * FROM products", function (err, results) {
                 if (err) throw err;
                 var choiceArray = [];
                 var choiceArrayPrice = [];
