@@ -1,7 +1,9 @@
 # bamazone-app
 This an app that functions like an Amazon storefront, using MySQL for storing, retrieving and updating stock inventories. The app will take in orders from customers and deplete stock from the store's inventory.  Also the app can track product sales across store's departments and then provide a summary of the highest-grossing departments in the store.
 
+
 The application do the following:
+
 
 #Customer View (Minimum Requirement)
 
@@ -26,6 +28,7 @@ The app prompt users with two messages.
 The first should ask them the ID of the product they would like to buy.
 
 The second message should ask how many units of the product they would like to buy.
+
 
 
 #Manager View
@@ -54,3 +57,6 @@ If a manager selects Add New Product, it should allow the manager to add a compl
 
 
 Github Repo: https://github.com/LMTrain/bamazone-app.git
+
+Deployment Link: https://lmtrain.github.io/bamazone-app/
+
