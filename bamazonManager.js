@@ -123,7 +123,7 @@ function listItems() {
       console.log("**************************************************************");
       for (var i = 0; i < results.length; i++) {
         choiceArray.push(results[i].product_name);
-        choiceArrayPrice.push(", Price = $" + results[i].price + ",  QTY = " + results[i].stock_quantity);
+        choiceArrayPrice.push(", Price = $" + results[i].price + ",  QTY = " + results[i].stock_quantity + ",  Sales = $" + results[i].product_sales);
         console.log("  " + [i+1] + ") " + choiceArray[i] + choiceArrayPrice[i]); 
       }
       console.log("\n");
@@ -136,18 +136,17 @@ var chosenId;
 var newStockQty;
 function lowInvent() {
     // query the database for all items being sold
-    connection.query("SELECT * FROM products WHERE stock_quantity <= 60", function(err, results) {
+    connection.query("SELECT * FROM products WHERE stock_quantity < 60", function(err, results) {
       if (err) throw err;
         var choiceArray = [];
-        var choiceArrayPrice = [];
-        // var chosenId;
+        var choiceArrayPrice = [];        
         console.log("\n");
-        console.log("*************************************************************");
-        console.log("* These are the lists of products that are low in inventory *");
-        console.log("*************************************************************");
+        console.log("**************************************************************************************");
+        console.log("* These are the lists of products that are low in inventory (Less than 60 Quantities)*");
+        console.log("**************************************************************************************");
         for (var i = 0; i < results.length; i++) {
           choiceArray.push(results[i].product_name);
-          choiceArrayPrice.push(", Price = $" + results[i].price + ",  QTY = " + results[i].stock_quantity);
+          choiceArrayPrice.push(", Price = $" + results[i].price + ",  QTY = " + results[i].stock_quantity + ",  Sales = $" + results[i].product_sales);
           chosenId = results[i].item_id;
           console.log(" " + chosenId + ") " + choiceArray[i] + choiceArrayPrice[i]); 
         }
@@ -159,9 +158,9 @@ function lowInvent() {
 
 function addInvent() {
     // prompt for info about the product thats low in inventory
-    connection.query("SELECT * FROM products WHERE stock_quantity <= 60", function(err, results) {
+    connection.query("SELECT * FROM products WHERE stock_quantity < 60", function(err, results) {
         if (err) throw err;
-        // once you have the items, prompt the Manger for which product they want to add inventory
+        // once you have the items, prompt the Manager for which product they want to add inventory
     
         inquirer
           .prompt([
@@ -173,12 +172,12 @@ function addInvent() {
                 var choiceArrayPrice = [];
                 var chosenId;
                 console.log("\n");
-                console.log("*************************************************************");
-                console.log("* These are the lists of products that are low in inventory *");
-                console.log("*************************************************************");
+                console.log("**************************************************************************************");
+                console.log("* These are the lists of products that are low in inventory (Less than 60 Quantities)*");
+                console.log("**************************************************************************************");
                 for (var i = 0; i < results.length; i++) {
                     choiceArray.push(results[i].product_name);
-                    choiceArrayPrice.push(", Price = $" + results[i].price + ",  QTY = " + results[i].stock_quantity);
+                    choiceArrayPrice.push(", Price = $" + results[i].price + ",  QTY = " + results[i].stock_quantity + ",  Sales = $" + results[i].product_sales);
                     chosenId = results[i].item_id;
                     console.log(" " + chosenId + ") " + choiceArray[i] + choiceArrayPrice[i]);                                      
                 }
@@ -202,13 +201,10 @@ function addInvent() {
               }
             }
     
-            // determine if there are enough of the product in stock
+            // determine if there are enough of the product in stock           
             
-            // if (chosenItem.stock_quantity > parseInt(answer.add)) {
               newStockQty = chosenItem.stock_quantity + parseInt(answer.add)
-              chosenId = chosenItem.item_id           
-              // console.log("Stock quantity is less than input quatity")          
-              
+              chosenId = chosenItem.item_id 
               connection.query(
                 "UPDATE products SET ? WHERE ?",
                 [
@@ -224,9 +220,7 @@ function addInvent() {
                   console.log("\n");               
                   console.log("******************************");
                   console.log("*Inventory added successfully!*");
-                  console.log("New Stock Quantity =" + newStockQty);
-                  // console.log("item_id =" + chosenId);
-                  // console.log("item_id =" + chosenItem.item_id);
+                  console.log("New Stock Quantity =" + newStockQty);                  
                   console.log("******************************");              
                 }
               );          
@@ -239,28 +233,11 @@ function addInvent() {
 
                 for (var i = 0; i < results.length; i++) {
                     choiceArray.push(results[i].product_name);
-                    choiceArrayPrice.push(", Price = $" + results[i].price + ",  QTY = " + results[i].stock_quantity);
+                    choiceArrayPrice.push(", Price = $" + results[i].price + ",  QTY = " + results[i].stock_quantity + ",  Sales = $" + results[i].product_sales);
                     console.log("  " + [i+1] + ") " + choiceArray[i] + choiceArrayPrice[i]);
-                }
-               
-                // console.log("Product Name  : " + result[chosenId - 1].product_name);
-                // console.log("Product Price : $" + result[chosenId - 1].price);
-                // console.log("Qty Purchased : " + answer.buy);
-                // console.log("Total Cost    : $" + totalCost);
-                // console.log("*******************************");
-                // console.log("\n");               
+                }                      
                 start();          
               });
-            // }
-            // else {
-            //   // Insufficient quantity.
-            //   console.log("\n");               
-            //   console.log("***************************************************************************");
-            //   console.log("*Your quantity is too high. We don't have that much in stock. Try again...*");
-            //   console.log("***************************************************************************");
-            //   console.log("\n");
-            //   start();
-            // }
         });
     });
 }

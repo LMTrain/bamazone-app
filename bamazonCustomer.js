@@ -94,8 +94,8 @@ function purchaseItem() {
         // determine if there are enough of the product in stock
         
         if (chosenItem.stock_quantity > parseInt(answer.buy)) {
-          newStockQty = chosenItem.stock_quantity - parseInt(answer.buy)           
-          // console.log("Stock quantity is less than input quatity")          
+          var totalCost;
+          newStockQty = chosenItem.stock_quantity - parseInt(answer.buy) 
           
           connection.query(
             "UPDATE products SET ? WHERE ?",
@@ -125,7 +125,18 @@ function purchaseItem() {
             console.log("Qty Purchased : " + answer.buy);
             console.log("Total Cost    : $" + totalCost);
             console.log("*******************************");
-            console.log("\n");               
+            console.log("\n");
+            connection.query(
+              "UPDATE products SET ? WHERE ?",
+              [              
+                {
+                  product_sales: totalCost
+                },
+                {
+                  item_id: chosenId
+                }
+              ],
+            );                              
             start();          
           });
         }
