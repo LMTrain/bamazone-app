@@ -4,10 +4,9 @@
   "description": "This app takes in orders from customers and deplete stock from the store's inventory.",
   "main": "bamazonCustomer.js",
   "dependencies": {
-    "inquirer": "^6.4.1",
+    "inquirer": "^8.2.0",
     "mysql": "^2.17.1"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
