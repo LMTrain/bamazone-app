@@ -124,7 +124,7 @@ function purchaseItem() {
             console.log("Product Price : $" + result[chosenId - 1].price);
             console.log("Qty Purchased : " + answer.buy);
             console.log("Total Cost    : $" + totalCost);
-            console.log("*******************************");
+            console.log("****************************");
             console.log("\n");
             connection.query(
               "UPDATE products SET ? WHERE ?",
